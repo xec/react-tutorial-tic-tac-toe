@@ -126,12 +126,10 @@ function calculateWinner (squares) {
     [0, 4, 8],
     [2, 4, 6]
   ]
-  return lines.reduce((winner, [a, b, c]) => {
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      winner = squares[a]
-    }
-    return winner
-  }, null)
+  const winningLine = lines.find(([a, b, c]) =>
+    squares[a] && squares[a] === squares[b] && squares[a] === squares[c]
+  )
+  return winningLine ? squares[winningLine[0]] : null
 }
 
 // ========================================
