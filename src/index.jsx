@@ -89,7 +89,7 @@ class Game extends React.Component {
 }
 
 function calculateWinner (squares) {
-  const winningLines = [
+  const lines = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -99,12 +99,12 @@ function calculateWinner (squares) {
     [0, 4, 8],
     [2, 4, 6]
   ]
-  return winningLines.some(line => {
-    const [a, b, c] = line
-    return squares[a] &&
-      squares[a] === squares[b] &&
-      squares[a] === squares[c]
-  })
+  return lines.reduce((winner, [a, b, c]) => {
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      winner = squares[a]
+    }
+    return winner
+  }, null)
 }
 
 // ========================================
