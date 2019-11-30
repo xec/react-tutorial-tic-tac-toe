@@ -4,7 +4,10 @@ import './index.css'
 
 function Square (props) {
   return (
-    <button className='square' onClick={props.onClick}>
+    <button
+      className={'square ' + (props.isWinningSquare ? 'winningSquare' : '')}
+      onClick={props.onClick}
+    >
       {props.value}
     </button>
   )
@@ -26,6 +29,7 @@ class Board extends React.Component {
                 key={square}
                 value={this.props.squares[square]}
                 onClick={() => this.props.onClick(square)}
+                isWinningSquare={(this.props.winningLine || []).indexOf(square) > -1}
               />
             ))}
           </div>
@@ -78,12 +82,13 @@ class Game extends React.Component {
   render () {
     const history = this.state.history
     const current = history[this.state.stepNumber]
-    const winner = calculateWinner(current.squares)
+    const winningLine = calculateWinner(current.squares)
+    const winner = winningLine && current.squares[winningLine[0]]
     const status = winner
       ? 'Winner: ' + winner
       : 'Next player: ' + (current.xIsNext ? 'X' : 'O')
 
-    let moves = history.map((step, moveIndex) => {
+    const moves = history.map((step, moveIndex) => {
       const col = (step.changedSquare % 3) + 1
       const row = Math.floor(step.changedSquare / 3) + 1
       const desc = moveIndex
@@ -100,13 +105,14 @@ class Game extends React.Component {
         </li>
       )
     })
-    if (this.state.reverseHistory) moves = moves.reverse()
+    if (this.state.reverseHistory) moves.reverse()
 
     return (
       <div className='game'>
         <div className='game-board'>
           <Board
             squares={current.squares}
+            winningLine={winningLine}
             onClick={(i) => this.handleClick(i)}
           />
         </div>
@@ -131,10 +137,9 @@ function calculateWinner (squares) {
     [0, 4, 8],
     [2, 4, 6]
   ]
-  const winningLine = lines.find(([a, b, c]) =>
+  return lines.find(([a, b, c]) =>
     squares[a] && squares[a] === squares[b] && squares[a] === squares[c]
   )
-  return winningLine ? squares[winningLine[0]] : null
 }
 
 // ========================================

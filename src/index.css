@@ -52,3 +52,6 @@ body {
   .current-history-item {
     font-weight: bold;
   }
+  .square.winningSquare {
+    background-color: yellow;
+  }
