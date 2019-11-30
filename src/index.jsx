@@ -29,7 +29,7 @@ class Board extends React.Component {
                 key={square}
                 value={this.props.squares[square]}
                 onClick={() => this.props.onClick(square)}
-                isWinningSquare={(this.props.winningLine || []).indexOf(square) > -1}
+                isWinningSquare={(this.props.winningLine || []).includes(square)}
               />
             ))}
           </div>
@@ -86,7 +86,9 @@ class Game extends React.Component {
     const winner = winningLine && current.squares[winningLine[0]]
     const status = winner
       ? 'Winner: ' + winner
-      : 'Next player: ' + (current.xIsNext ? 'X' : 'O')
+      : this.state.stepNumber > 8
+        ? 'The game is a draw :('
+        : 'Next player: ' + (current.xIsNext ? 'X' : 'O')
 
     const moves = history.map((step, moveIndex) => {
       const col = (step.changedSquare % 3) + 1
