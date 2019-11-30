@@ -39,16 +39,18 @@ class Board extends React.Component {
   }
 }
 
+const initialGameState = {
+  history: [{
+    squares: Array(9).fill(null),
+    xIsNext: true
+  }],
+  stepNumber: 0
+}
+
 class Game extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {
-      history: [{
-        squares: Array(9).fill(null),
-        xIsNext: true
-      }],
-      stepNumber: 0
-    }
+    this.state = initialGameState
   }
 
   handleClick (i) {
@@ -77,6 +79,10 @@ class Game extends React.Component {
     this.setState({
       reverseHistory: !this.state.reverseHistory
     })
+  }
+
+  resetGame () {
+    this.setState(initialGameState)
   }
 
   render () {
@@ -121,6 +127,7 @@ class Game extends React.Component {
         <div className='game-info'>
           <div>{status}</div>
           <button onClick={() => this.reverseHistory()}>Reverse history</button>
+          <button onClick={() => this.resetGame()}>Reset game</button>
           <ol>{moves}</ol>
         </div>
       </div>
