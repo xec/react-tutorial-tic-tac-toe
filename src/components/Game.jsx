@@ -54,6 +54,8 @@ function Game () {
   // since the code appears to work fine like this, it means this code re-runs each click.
   // how does the history const (initialized a few lines above) not get overwritten with a new state instance
   // or in other words - how does useState work?
+  // according to https://reactjs.org/docs/hooks-rules.html#explanation the order of the calls are paramount. for some reason.
+  // NickServ@reactiflux - "basically React fibers in the rendered tree combine the component instance with other metadata including state and refs"
   const current = history[stepNumber]
   const winningLine = calculateWinner(current.squares)
   const winner = winningLine && current.squares[winningLine[0]]
@@ -87,13 +89,13 @@ function Game () {
         <Board
           squares={current.squares}
           winningLine={winningLine}
-          onClick={(i) => handleClick(i)}
+          onClick={handleClick} // how does i get passed in?
         />
       </div>
       <div className='game-info'>
         <div>{status}</div>
         <button onClick={() => setReverseHistory(!reverseHistory)}>Reverse history</button>
-        <button onClick={() => resetGame()}>Reset game</button>
+        <button onClick={resetGame}>Reset game</button>
         <ol>{moves}</ol>
       </div>
     </div>
