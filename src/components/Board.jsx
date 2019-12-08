@@ -1,5 +1,5 @@
 import React from 'react'
-import Square from './Square'
+// import Square from './Square'
 
 const boardRows = [
   [0, 1, 2],
@@ -11,14 +11,18 @@ const Board = (props) =>
   <div>
     {boardRows.map((row, index) =>
       <div key={index} className='board-row'>
-        {row.map(square =>
-          <Square
-            key={square}
-            value={props.squares[square]}
-            onClick={() => props.onClick(square)}
-            isWinningSquare={(props.winningLine || []).includes(square)}
-          />
-        )}
+        {row.map(square => {
+          const isWinningSquare = (props.winningLine || []).includes(square)
+          return (
+            <button
+              key={square}
+              className={'square' + (isWinningSquare ? ' winningSquare' : '')}
+              onClick={() => props.onClick(square)}
+            >
+              {props.squares[square]}
+            </button>
+          )
+        })}
       </div>
     )}
   </div>
